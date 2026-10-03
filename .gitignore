@@ -1,0 +1,6 @@
+target/
+morah.db
+morah.db-journal
+.idea/
+*.iml
+.vscode/

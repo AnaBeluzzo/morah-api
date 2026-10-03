@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: morah-api
+  profiles:
+    # Se voce nao informar nenhum perfil, usa "dev" (que liga o seed de dados de teste).
+    default: dev
+  datasource:
+    # foreign_keys=on: o SQLite IGNORA chaves estrangeiras por padrao, entao ligamos aqui.
+    url: jdbc:sqlite:morah.db?foreign_keys=on
+    driver-class-name: org.sqlite.JDBC
+    hikari:
+      # SQLite aceita apenas um escritor por vez -> um unico connection no pool.
+      maximum-pool-size: 1
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      # "update" cria/ajusta as tabelas sozinho. SO NESTA FASE; depois migramos para Flyway.
+      ddl-auto: update
+    # false = o banco nao fica "aberto" durante a serializacao do JSON (evita consultas escondidas).
+    open-in-view: false
+  mvc:
+    problemdetails:
+      enabled: true   # erros no formato RFC 9457 (application/problem+json)
+  data:
+    web:
+      pageable:
+        max-page-size: 100   # o YAML limita size a 100
+
+server:
+  servlet:
+    context-path: /v1   # o contrato OpenAPI usa /v1 como base
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
